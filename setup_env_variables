@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# scribt to set up environment variables for moneta
+
+export MONETA_MYSQL_USER=moneta_user
+export MONETA_MYSQL_PWD=Moneta_User_PWD
+export MONETA_MYSQL_HOST=localhost
+export MONETA_MYSQL_PORT=3306
+export MONETA_MYSQL_DB=moneta_db

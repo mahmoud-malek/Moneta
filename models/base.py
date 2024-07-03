@@ -24,25 +24,18 @@ class BaseModel:
 
         if kwargs:
             for key, value in kwargs.items():
-                self.__setattr__(key, value)
+                if hasattr(self, key):
+                    setattr(self, key, value)
 
-            # check for created_date
-            if kwargs.get('created_at', None) and isinstance(
-                    self.created_at, str):
+            # check for created_at
+            if 'created_at' in kwargs and isinstance(kwargs['created_at'],
+                                                     str):
                 self.created_at = datetime.strptime(kwargs['created_at'], time)
-            else:
-                self.created_at = datetime.utcnow()
 
-            # check for modified date
-            if kwargs.get('modified_at', None) and isinstance(
-                    self.modified_at, str):
-                self.modified_at = datetime.strptime(kwargs['modified_at'],
-                                                     time)
-            else:
-                self.modified_at = datetime.utcnow()
+            self.modified_at = datetime.utcnow()
 
             # check for id
-            if kwargs.get('id', None) is None:
+            if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
 
         else:
@@ -56,11 +49,11 @@ class BaseModel:
                                          self.__dict__)
 
     def delete(self):
-        """ deletes the object from the databse """
+        """ deletes the object from the database """
         models.storage.delete(self)
 
     def save(self):
         """ saves the object to mysql database """
-        self.modified_at = datetime.utcnow
-        models.storage.new(self)
+        self.modified_at = datetime.utcnow()  # Fixed: Call to datetime.utcnow
+        models.storage.add(self)
         models.storage.save()
