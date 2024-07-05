@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Register</title>
+		<link rel="stylesheet" type="text/css" href="../static/styles/register_page.css">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	</head>
+
+	<body>
+		<div class="logo">
+			<img src="../static/images/logo.png" alt="logo">
+		</div>
+		<div class="register_form">
+			<h1>Register</h1>
+
+			{% if error %}
+			<div class="error_message"> {{ error }} </div>
+			{% endif %}
+
+			{% if success %}
+			<div class="success_message" role="alert"> {{ success }} </div>
+				<!-- Hidden input to store the success message -->
+			<input type="hidden" id="successMessage" value="{{ success }}">
+			{% endif %}
+
+			
+			<form action="/register" method="post">
+
+				<div class="form_input {% if error %}input_error{% endif %}">
+					<input type="text" name="email" placeholder="Email" required>
+				</div>
+				<div class="form_input {% if error %}input_error{% endif %}">
+					<input type="text" name="name" placeholder="Name" required>
+				</div>
+				<div class="form_input {% if error %}input_error{% endif %}">
+					<input type="password" name="password" placeholder="Password" required>
+				</div>
+				<div class="form_input {% if error %}input_error{% endif %}">
+					<input type="password" name="confirm_password" placeholder="Confirm Password" required>
+				</div>
+				<div class="form_submit">
+					<input type="submit" value="Register">
+				</div>
+				<div class="form_submit">
+					<input type="button" value="Login" onclick="window.location.href='login'">
+				</div>
+		</div>
+		<script src="../static/scripts/register_page.js"></script>
+
+	</body>
+</html>

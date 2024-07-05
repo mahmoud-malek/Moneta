@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<title>Login</title>
+		<link rel="stylesheet" type="text/css" href="../static/styles/login_page.css">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+		
+	</head>
+
+	<body>
+		<div class="logo">
+			<img src="../static/images/logo.png" alt="logo">
+		</div>
+		
+		<div class="login_form">
+			<form action="/login" method="post">
+				<div class="form_title">
+					<h1>Welcome Back! </h1>
+				</div>
+				<!-- Display the error message -->
+				{% if error %}
+				<div class="error_message"> {{ error }} </div>
+				{% endif %}
+				<div class="form_input {% if error %}input_error{% endif %} ">
+					<input type="text" name="email" placeholder="Email\Username" required>
+				</div>
+				<div class="form_input {% if error %}input_error{% endif %}">
+					<input type="password" name="password" placeholder="Password" required>
+				</div>
+				<div class="form_submit">
+					<input type="submit" value="Login">
+				</div>
+				<div class="form_submit"> 
+					<input type="button" value="Register" onclick="window.location.href='/register'">
+				</div>
+		</div>
+	</body>
+	<script src="scripts/login_page.js"></script>
+</html>
