@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# creates a mysql database and user
+
+mysql -u root < setup_database.sql

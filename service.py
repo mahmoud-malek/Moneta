@@ -3,6 +3,7 @@
 """ this is a module for the application,
 handles services needed """
 
+from decimal import Decimal
 from models import storage
 from models.user import User
 from models.category import Category
@@ -53,3 +54,22 @@ def transactions_for_user(user=None, id=None):
         return user.transactions
 
     return []
+
+
+def to_dict(obj):
+    """Convert object to dictionary."""
+    if obj is None or not isinstance(obj, (User, Category, Transaction)):
+        return None
+
+    # Create a copy of the dictionary items for safe iteration
+    items_copy = list(obj.__dict__.items())
+    for key, value in items_copy:
+        if key.startswith('_'):
+            # Modify the original dictionary, not the copy
+            obj.__dict__.pop(key)
+        elif key == 'created_at' or key == 'modified_at':
+            obj.__dict__[key] = value.isoformat()
+        elif isinstance(value, Decimal):
+            # Convert Decimal to string for JSON serialization
+            obj.__dict__[key] = str(value)
+    return obj.__dict__

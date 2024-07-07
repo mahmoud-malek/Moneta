@@ -9,7 +9,7 @@ from sqlalchemy.orm import relationship
 import models
 from models.category import Category
 from models.transaction import Transaction
-
+from decimal import Decimal
 known_classes = {'Category': Category, 'Transaction': Transaction}
 
 
@@ -80,7 +80,7 @@ class User(BaseModel, Base):
             return
 
         self.transaction_count += 1
-        self.current_balance += transaction.amount
+        self.current_balance += Decimal(transaction.amount)
         transaction.user_id = self.id
         category.add_transaction(transaction)
         self.transactions.append(transaction)

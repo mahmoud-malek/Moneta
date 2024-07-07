@@ -17,7 +17,7 @@ class Transaction(BaseModel, Base):
     category_id = Column(String(36),
                          ForeignKey('categories.id'),
                          nullable=False)
-    amount = Column(DECIMAL(15.3), nullable=False)
+    amount = Column(DECIMAL(15, 3), nullable=False)
     description = Column(String(255))
 
     def __init__(self, *args, **kwargs):

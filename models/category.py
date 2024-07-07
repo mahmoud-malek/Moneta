@@ -8,6 +8,7 @@ from sqlalchemy import String, Integer, DECIMAL
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from models.transaction import Transaction
+from decimal import Decimal
 
 
 class Category(BaseModel, Base):
@@ -29,7 +30,7 @@ class Category(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """ constructor to initialize the category """
         self.transaction_count = 0
-        self.current_balance = 0.0
+        self.current_balance = Decimal(0.000)
 
         super().__init__(*args, **kwargs)
 
@@ -47,7 +48,7 @@ class Category(BaseModel, Base):
             return
 
         self.transaction_count += 1
-        self.current_balance += transaction.amount
+        self.current_balance += Decimal(transaction.amount)
         transaction.category_id = self.id
         self.transactions.append(transaction)
         return transaction

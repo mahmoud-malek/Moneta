@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>Moneta</h2>
+        </div>
+        <ul class="sidebar-menu">
+			<li class="#"><a href="#"><i class="fas fa-home"></i> Home</a></li>
+            <li class="active"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fas fa-wallet"></i> Transactions</a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i> Categories</a></li>
+            <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+    </nav>
+    <div class="main">
+        <header>
+            <h1>Dashboard</h1>
+            <div class="user-wrapper">
+                <div>Welcome, {{ user.name }}</div>
+            </div>
+            <div class="logout-wrapper">
+                <i class="fas fa-sign-out-alt"></i>
+                <a href="/logout">Logout</a>
+            </div>
+        </header>
+        <main>
+            <div class="cards">
+                <div class="card">
+                    <div class="card_info">
+						<h3>{{user.current_balance}}</h3>
+						<p>Current Balance</p>
+					</div>
+                    <div class="card_icon">
+						<i class="fas fa-wallet"></i>
+					</div>
+                </div>
+                <div class="card">
+                    <div class="card_info">
+						<h3 id="income">0.000</h3>
+						<p>Income</p>
+					</div>
+                    <div class="card_icon">
+						<i class="fas fa-arrow-up"></i>
+					</div>
+                </div>
+                <div class="card">
+                    <div class="card_info">
+						<h3 id="expenses">0.000</h3>
+						<p>Expense</p>
+					</div>
+                    <div class="card_icon">
+						<i class="fas fa-arrow-down"></i>
+					</div>
+                </div>
+            </div>
+            <div class="charts">
+                <div class="chart">
+                    <h2>Income VS Expenses</h2>
+                    <canvas id="incomeExpensesChart"></canvas>
+                </div>
+                <div class="chart">
+                    <h2>Spending Categories</h2>
+                    <canvas id="spendingCategoriesChart"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="../static/scripts/dashboard.js"></script>
+
+</body>
+</html>
