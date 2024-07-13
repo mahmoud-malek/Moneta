@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <link rel="stylesheet" href="../static/styles/categories.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+	
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <h2>Moneta</h2>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="#"><a href="#"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="/transactions"><i class="fas fa-wallet"></i> Transactions</a></li>
+        <li class="active"><a href="#"><i class="fas fa-tags"></i> Categories</a></li>
+        <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+      </ul>
+    </nav>
+    <div class="main-content">
+      <header>
+        <h1>Categories</h1>
+        <div class="user-wrapper">
+          <div>Welcome, {{ user.name }}</div>
+        </div>
+        <div class="logout-wrapper">
+          <i class="fas fa-sign-out-alt"></i>
+          <a href="/logout">Logout</a>
+        </div>
+      </header>
+      <main>
+        <section>
+          <div class="categories-header">
+            <button id="addCategoryBtn">Add Category</button>
+            <div class="filter-sort">
+              <input type="text" id="searchCategory" placeholder="Search..." />
+              <select id="sortCategory">
+                <option value="date">Date</option>
+                <option value="balance">Balance</option>
+                <option value="name">Name</option>
+				<option value="numberOfTransactions">Number of Transactions</option>
+				
+              </select>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="categories-list">
+            <!-- Categories will be inserted here dynamically -->
+          </div>
+		  
+		  <div class="pagination">
+			<button id="prevPage">Prev</button>
+			<span id="pageInfo">Page 1 of 1</span>
+			<button id="nextPage">Next</button>
+
+		  </div>
+        </section>
+        <section>
+          <div id="addCategoryModel" class="model">
+            <div class="model-content">
+              <span class="close">&times;</span>
+              <form id="categoryForm" autocomplete="on">
+                <label for="category-date">Date:</label>
+                <input type="date" id="category-date" name="date" required />
+                <label for="category-balance">Category Balance: <span>optional</span> </label>
+                <input type="number" id="category-balance" name="amount" step="0.001" />
+                <label for="category-name">Name:</label>
+				<input type="text" id="category-name" name="name" required />
+				<label for="description">Description: <span>optional</span> </label>
+				<input type="text" id="category-description" name="description" />
+
+                
+                <button type="submit">Add Category</button>
+              </form>
+            </div>
+          </div>
+        </section>
+		<section>
+			<div id="editCategoryModel" class="model">
+				<div class="model-content">
+					<span class="close">&times;</span>
+					<form id="editCategoryForm" autocomplete="on">
+						<label for="category-date">Date:</label>
+						<input type="date" id="edit-category-date" name="date" required />
+						<label for="category-balance">Category Balance: </label>
+						<input type="number" id="edit-category-balance" name="amount" step="0.001" />
+						<label for="category-name">Name:</label>
+						<input type="text" id="edit-category-name" name="name" required />
+						<label for="description">Description: </label>
+						<input type="text" id="edit-category-description" name="description" />
+						<input type="hidden" id="edit-category-id" name="id" />
+						<button type="submit">Edit Category</button>
+					</form>
+			</div>
+		</section>
+      </main>
+    </div>
+    <script src="../static/scripts/cateogries.js"></script>
+  </body>
+</html>

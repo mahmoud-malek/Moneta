@@ -1,3 +1,4 @@
+/* body */
 * {
 	margin: 0;
 	padding: 0;
@@ -8,6 +9,8 @@
 body {
 	display: flex;
 }
+
+ /* Sidebar */
 
 .sidebar {
 	display: flex;
@@ -51,11 +54,13 @@ body {
     background: #575757;
 }
 
+/* Main content */
+
+
 .main-content{
 	padding: 20px;
 	width: 80%;
 	min-height: 100vh;
-	height: 200vh;
 	background: #f4f4f4;
 	margin-left: 20%;
 }
@@ -78,104 +83,99 @@ header{
 	color: black
 }
 
-.transactions-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+/* Categories */
+
+.categories-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.transactions-header button {
-    background-color: #2a2a2a;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.categories-header button {
+
+	background-color: #2a2a2a;
+	color: white;
+	border-radius: 5px;
+	border: 0;
+	padding: 10px 20px;
+	cursor: pointer;
+	margin-bottom: 30px;
 }
 
-.transactions-header .filter-sort {
-    display: flex;
-    align-items: center;
+.filter-sort {
+	display: flex;
+	align-items: center;
 }
 
-.transactions-header input,
-.transactions-header select {
-    margin-left: 10px;
+.categories-header input, .categories-header select {
+	margin-left: 10px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.transactions-list {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.categories-list {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
 }
 
-.transaction-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #f1f1f1;
+.category-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 0;
+    border-bottom: 1px solid #d3d0d0;
 }
 
-.transaction-item:last-child {
-    border-bottom: none;
+.category-item:last-child {
+	border-bottom: none;
 }
 
-.transaction-item .transaction-info {
-    display: flex;
-    flex-direction: column;
+.category-item .category-info {
+	display: flex;
+	flex-direction: column;
 	width: 50%;
 }
 
-.transaction-item .transaction-info span {
+.category-item .category-info span {
     margin: 2px 0;
 }
 
-.transaction-amount {
-    font-weight: 700;
-	width: 20%;
-}
-
-.transaction-amount.income {
-    color: green;
-}
-
-.transaction-amount.expense {
-    color: red;
-}
-
-.transaction-item .transaction-info span p {
+.category-item .category-info span p {
 	display: contents;
 	color: rgb(66, 17, 165);
 }
+.category-balance {
+    font-weight: 700;
+}
 
-/* Modal styles */
+
+/* Modal */
+
 .model {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	overflow: auto;
 }
 
 .model-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 8px;
+	background-color: #fefefe;
+	margin: 10% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 30%;
 }
 
 .close {
@@ -192,19 +192,22 @@ header{
     cursor: pointer;
 }
 
-form label {
-    display: block;
-    margin-top: 10px;
+/* Form */
+
+form label{
+	display: block;
+	margin-top: 10px;
 }
 
 form input,
 form select,
 form button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+	width: 100%;
+	padding: 10px;
+	margin-top: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+
 }
 
 form button {
@@ -215,35 +218,45 @@ form button {
     margin-top: 20px;
 }
 
+form button:hover {
+	background-color: #575757;
+}
+
+label span {
+	color: rgb(0, 0, 0);
+	opacity: 0.3;
+}
+
+/* Pagination */
+
 .pagination {
+	margin-top: 40px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-top: 20px;
 }
-
 .pagination button {
 	background-color: #2a2a2a;
-	color: #fff;
-	padding: 10px 20px;
-	border: none;
+	color: white;
 	border-radius: 5px;
+	border: 0;
+	padding: 10px 20px;
 	cursor: pointer;
-	margin: 0 10px;
+	margin: 0px 20px;
 }
 
 /* Edit and Delete buttons */
-.edit-transaction{
+.edit-category{
 	justify-self: flex-end;
 	
 }
 
-.delete-transaction {
+.delete-category {
 	justify-self: flex-end;
 }
 
-.delete-transaction button,
-.edit-transaction button {
+.delete-category button,
+.edit-category button {
 background-color: rgb(117, 114, 123);;
 	color: white;
 	border-radius: 5px;
@@ -252,4 +265,3 @@ background-color: rgb(117, 114, 123);;
 	cursor: pointer;
 	margin: 0px 20px;
 }
-
