@@ -7,9 +7,6 @@ sudo apt-get install -y python3 python3-pip python3-dev mysql-server libmysqlcli
 # Install necessary Python packages for the user
 python3 -m pip install --user flask flask-mysql gunicorn
 
-# Clone the repository
-git clone https://github.com/mahmoud-malek/Montea.git
-cd Montea
 
 # Make sure setup scripts are executable
 chmod +x setup_env_variables
