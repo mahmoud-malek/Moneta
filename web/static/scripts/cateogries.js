@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(data => {
         if (data.success === true) {
           filteredCategories.unshift(data.category);
-          categories.unshift(data.category);
           totalPages = Math.ceil(filteredCategories.length / categoriesPerPage);
           updateFilteredCategoriesList(currentPage, filteredCategories);
           addCategoryModel.style.display = 'none';

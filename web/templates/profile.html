@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>Moneta</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="/"><a href="/"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="/transactions"><i class="fas fa-wallet"></i> Transactions</a></li>
+            <li><a href="/categories"><i class="fas fa-tags"></i> Categories</a></li>
+            <li class="active"><a href="/profile"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+    </nav>
+    <div class="main">
+        <header>
+            <h1>Profile</h1>
+            <div class="user-wrapper">
+                <div>Welcome, {{ user.name }}</div>
+            </div>
+            <div class="logout-wrapper">
+                <i class="fas fa-sign-out-alt"></i>
+                <a href="/logout">Logout</a>
+            </div>
+        </header>
+        <main>
+            <section>
+                <div class="profile-content">
+                    <div class="profile-info">
+                        <h2>Profile Information</h2>
+                        <div class="profile-info-item">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" value="{{ user.name }}" disabled>
+                            <button class="edit-btn" data-field="name">Edit</button>
+                        </div>
+                        <div class="profile-info-item">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" value="{{ user.email }}" disabled>
+                            <button class="edit-btn" data-field="email">Edit</button>
+                        </div>
+                        <div class="profile-info-item">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" value="********" disabled>
+                            <button class="edit-btn" data-field="password">Edit</button>
+                        </div>
+                        <div class="profile-info-item">
+                            <label for="current_balance">Current Balance</label>
+                            <input type="text" id="current_balance" value="{{ user.current_balance }}" disabled>
+                            <button class="edit-btn" data-field="current_balance">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit <span id="modalFieldName"></span></h2>
+            <form id="editForm">
+                <div class="form-group">
+                    <label for="editValue">New Value</label>
+                    <input type="text" id="editValue">
+                </div>
+                <div class="form-group password-fields" style="display: none;">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword">
+                </div>
+                <button class="save-btn" type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../static/scripts/profile.js"></script>
+</body>
+</html>
