@@ -20,7 +20,7 @@ from decimal import Decimal
 secret_key = secrets.token_hex(16)
 app = Flask(__name__)
 app.secret_key = secret_key
-
+app.strict_slashes = False
 
 @app.teardown_appcontext
 def close_session(exception):

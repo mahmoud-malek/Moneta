@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+# Update and install necessary packages
+sudo apt-get update
+sudo apt-get install -y python3 python3-pip python3-dev mysql-server libmysqlclient-dev nginx git
+
+# Install necessary Python packages for the user
+python3 -m pip install --user flask flask-mysql gunicorn
+
+# Clone the repository
+git clone https://github.com/mahmoud-malek/Montea.git
+cd Montea
+
+# Make sure setup scripts are executable
+chmod +x setup_env_variables
+chmod +x setup_database
+
+# Configure environment variables and database
+./setup_env_variables
+./setup_database
+
+# Create a Gunicorn systemd service file
+sudo bash -c 'cat > /etc/systemd/system/moneta.service <<EOL
+[Unit]
+Description=Gunicorn instance to serve moneta
+After=network.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/Montea
+ExecStart=/home/ubuntu/.local/bin/gunicorn --workers 3 --bind 0.0.0.0:5003 --access-logfile /tmp/moneta-access.log --error-logfile /tmp/moneta-error.log wsgi:app
+
+[Install]
+WantedBy=multi-user.target
+EOL'
+
+# Start and enable the Gunicorn service
+sudo systemctl start moneta.service
+sudo systemctl enable moneta.service
+
+# Configure Nginx
+sudo bash -c 'cat > /etc/nginx/sites-available/moneta <<EOL
+server {
+    listen 80;
+    listen [::]:80;
+    server_name _;
+
+    location / {
+        proxy_pass http://127.0.0.1:5003;
+        include proxy_params;
+    }
+}
+EOL'
+
+# Enable the Nginx configuration
+sudo ln -s /etc/nginx/sites-available/moneta /etc/nginx/sites-enabled
+sudo nginx -t
+sudo systemctl restart nginx
+
+echo "Setup Complete. Your Flask application is now running."
