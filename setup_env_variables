@@ -6,3 +6,4 @@ export MONETA_MYSQL_PWD=Moneta_User_PWD
 export MONETA_MYSQL_HOST=localhost
 export MONETA_MYSQL_PORT=3306
 export MONETA_MYSQL_DB=moneta_db
+export SECRET_KEY='fbf8404e5477436ca3c0ba3b02edb972'

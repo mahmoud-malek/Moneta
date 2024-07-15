@@ -2,10 +2,10 @@
 
 # Update and install necessary packages
 sudo apt-get update
-sudo apt-get install -y python3 python3-pip python3-dev mysql-server libmysqlclient-dev nginx git
+sudo apt-get install -y python3 python3-pip python3-dev mysql-server libmysqlclient-dev nginx pkg-config
 
 # Install necessary Python packages for the user
-python3 -m pip install --user flask flask-mysql gunicorn
+pip3 install --user flask flask-mysql gunicorn sqlalchemy mysqlclient
 
 
 # Make sure setup scripts are executable
@@ -25,8 +25,16 @@ After=network.target
 [Service]
 User=ubuntu
 Group=ubuntu
-WorkingDirectory=/home/ubuntu/Montea
-ExecStart=/home/ubuntu/.local/bin/gunicorn --workers 3 --bind 0.0.0.0:5003 --access-logfile /tmp/moneta-access.log --error-logfile /tmp/moneta-error.log wsgi:app
+WorkingDirectory=/home/ubuntu/Moneta
+ExecStart=/home/ubuntu/.local/bin/gunicorn --workers 3 --bind 0.0.0.0:5003 --access-logfile /tmp/mo>
+Environment="PATH=/home/ubuntu/.local/bin:/usr/bin"
+Environment="FLASK_ENV=production"
+Environment="MONETA_MYSQL_USER=moneta_user"
+Environment="MONETA_MYSQL_PWD=Moneta_User_PWD"
+Environment="MONETA_MYSQL_HOST=localhost"
+Environment="MONETA_MYSQL_PORT=3306"
+Environment="MONETA_MYSQL_DB=moneta_db"
+Environment="SECRET_KEY=fbf8404e5477436ca3c0ba3b02edb972"
 
 [Install]
 WantedBy=multi-user.target
@@ -41,17 +49,23 @@ sudo bash -c 'cat > /etc/nginx/sites-available/moneta <<EOL
 server {
     listen 80;
     listen [::]:80;
-    server_name _;
+    server_name 35.153.232.85;
 
     location / {
         proxy_pass http://127.0.0.1:5003;
-        include proxy_params;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Cookie $http_cookie;
     }
 }
 EOL'
 
 # Enable the Nginx configuration
 sudo ln -s /etc/nginx/sites-available/moneta /etc/nginx/sites-enabled
+sudo unlink /etc/nginx/sites-enabled/default
+
 sudo nginx -t
 sudo systemctl restart nginx
 

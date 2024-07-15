@@ -14,13 +14,15 @@ import hashlib
 import service
 import secrets
 import json
+import os
 from datetime import datetime
 from decimal import Decimal
 
-secret_key = secrets.token_hex(16)
+secret_key = os.getenv('SECRET_KEY')
 app = Flask(__name__)
 app.secret_key = secret_key
 app.strict_slashes = False
+
 
 @app.teardown_appcontext
 def close_session(exception):
@@ -46,9 +48,9 @@ def dashboard():
     categories = service.get_categoiries_for_user(user)
     transactions = service.transactions_for_user(user)
     return render_template('dashboard.html',
-      user=user,
-      categories=categories,
-      transactions=transactions)
+                           user=user,
+                           categories=categories,
+                           transactions=transactions)
 
 
 @app.route('/login', methods=['GET'])
@@ -102,11 +104,11 @@ def register_post():
 
     if password != password_confirmation:
         return render_template('register.html',
-          error='Password and confirmation do not match')
+                               error='Password and confirmation do not match')
 
     if len(password) < 8:
         return render_template('register.html',
-          error='Password must be at least 8 characters')
+                               error='Password must be at least 8 characters')
 
     if "@" not in email or "." not in email:
         return render_template('register.html', error='Invalid email')
@@ -120,7 +122,7 @@ def register_post():
     session['user'] = user.id
     # message success on sign up and redirect to dashboard
     return render_template('register.html',
-      success='User created successfully')
+                           success='User created successfully')
 
 
 @app.route('/api/v1/categories', methods=['GET'])
@@ -133,7 +135,7 @@ def categories():
     categories = service.get_categoiries_for_user(user)
     headers = {'Content-Type': 'application/json'}
     body = {'categories': [service.to_dict(
-     category) for category in categories]}
+        category) for category in categories]}
     body = json.dumps(body)
     return body, 200, headers
 
@@ -148,7 +150,7 @@ def transactions():
     transactions = service.transactions_for_user(user)
     headers = {'Content-Type': 'application/json'}
     body = {
-     'transactions': [service.to_dict(transaction) for transaction in transactions]
+        'transactions': [service.to_dict(transaction) for transaction in transactions]
     }
     body = json.dumps(body)
     return body, 200, headers
@@ -165,7 +167,7 @@ def income_month():
     income = 0
     for transaction in transactions:
         if (transaction.amount > 0
-          and transaction.created_at.month == datetime.now().month):
+                and transaction.created_at.month == datetime.now().month):
             income += transaction.amount
     headers = {'Content-Type': 'application/json'}
     body = {'income': str(income)}
@@ -184,7 +186,7 @@ def expense_month():
     expense = 0
     for transaction in transactions:
         if (transaction.amount < 0
-          and transaction.created_at.month == datetime.now().month):
+                and transaction.created_at.month == datetime.now().month):
             expense += transaction.amount
     headers = {'Content-Type': 'application/json'}
     body = {'expenses': str(expense)}
@@ -211,7 +213,7 @@ def transaction():
     user = storage.get_object(User, session['user'])
     categories = service.get_categoiries_for_user(user)
     return render_template('transactions.html',
-      user=user, categories=categories)
+                           user=user, categories=categories)
 
 
 @app.route('/api/v1/transactions', methods=['POST'])
@@ -219,8 +221,8 @@ def transaction_post():
     """ transaction post """
     if 'user' not in session:
         return jsonify({
-         'success': False,
-         'message': 'User not logged in'
+            'success': False,
+            'message': 'User not logged in'
         }), 401
 
     user = storage.get_object(User, session['user'])
@@ -242,17 +244,17 @@ def transaction_post():
     storage.save()
 
     return jsonify({
-     'success': True,
-     'transaction': {
-      'id': transaction.id,
-      'date': transaction.created_at,
-      'amount': str(transaction.amount),
-      'category': category.name,
-      'type': amount_type,
-      'created_at': transaction.created_at,
-      'name': category.name,
-      'category_id': category.id
-     }
+        'success': True,
+        'transaction': {
+            'id': transaction.id,
+            'date': transaction.created_at,
+            'amount': str(transaction.amount),
+            'category': category.name,
+            'type': amount_type,
+            'created_at': transaction.created_at,
+            'name': category.name,
+            'category_id': category.id
+        }
     })
 
 
@@ -261,16 +263,16 @@ def transaction_put(transaction_id):
     """ transaction put """
     if 'user' not in session:
         return jsonify({
-         'success': False,
-         'message': 'User not logged in'
+            'success': False,
+            'message': 'User not logged in'
         }), 401
 
     user = storage.get_object(User, session['user'])
     transaction = storage.get_object(Transaction, transaction_id)
     if transaction.user_id != user.id:
         return jsonify({
-         'success': False,
-         'message': 'Transaction does not belong to user'
+            'success': False,
+            'message': 'Transaction does not belong to user'
         }), 401
 
     data = request.get_json()
@@ -290,17 +292,17 @@ def transaction_put(transaction_id):
     storage.save()
 
     return jsonify({
-     'success': True,
-     'transaction': {
-      'id': transaction.id,
-      'date': transaction.created_at,
-      'amount': str(transaction.amount),
-      'category': category.name,
-      'type': amount_type,
-      'created_at': transaction.created_at,
-      'name': category.name,
-      'category_id': category.id
-     }
+        'success': True,
+        'transaction': {
+            'id': transaction.id,
+            'date': transaction.created_at,
+            'amount': str(transaction.amount),
+            'category': category.name,
+            'type': amount_type,
+            'created_at': transaction.created_at,
+            'name': category.name,
+            'category_id': category.id
+        }
     })
 
 
@@ -309,24 +311,24 @@ def transaction_delete(transaction_id):
     """ transaction delete """
     if 'user' not in session:
         return jsonify({
-         'success': False,
-         'message': 'User not logged in'
+            'success': False,
+            'message': 'User not logged in'
         }), 401
 
     user = storage.get_object(User, session['user'])
     transaction = storage.get_object(Transaction, transaction_id)
     if transaction.user_id != user.id:
         return jsonify({
-         'success': False,
-         'message': 'Transaction does not belong to user'
+            'success': False,
+            'message': 'Transaction does not belong to user'
         }), 401
 
     user.delete_transaction(transaction)
     storage.save()
 
     return jsonify({
-     'success': True,
-     'message': 'Transaction deleted successfully'
+        'success': True,
+        'message': 'Transaction deleted successfully'
     })
 
 
@@ -335,8 +337,8 @@ def category_post():
     """ category post """
     if 'user' not in session:
         return jsonify({
-         'success': False,
-         'message': 'User not logged in'
+            'success': False,
+            'message': 'User not logged in'
         }), 401
 
     user = storage.get_object(User, session['user'])
@@ -353,22 +355,22 @@ def category_post():
 
     date = datetime.strptime(date, "%Y-%m-%d")
     category = Category(name=name,
-      created_at=date,
-      current_balance=current_balance,
-      description=description)
+                        created_at=date,
+                        current_balance=current_balance,
+                        description=description)
     user.add_category(category)
     storage.save()
 
     return jsonify({
-     'success': True,
-     'category': {
-      'id': category.id,
-      'name': category.name,
-      'created_at': category.created_at,
-      'transaction_count': category.transaction_count,
-      'current_balance': category.current_balance,
-      'description': category.description
-     }
+        'success': True,
+        'category': {
+            'id': category.id,
+            'name': category.name,
+            'created_at': category.created_at,
+            'transaction_count': category.transaction_count,
+            'current_balance': category.current_balance,
+            'description': category.description
+        }
     })
 
 
@@ -377,24 +379,24 @@ def category_delete(category_id):
     """ category delete """
     if 'user' not in session:
         return jsonify({
-         'success': False,
-         'message': 'User not logged in'
+            'success': False,
+            'message': 'User not logged in'
         }), 401
 
     user = storage.get_object(User, session['user'])
     category = storage.get_object(Category, category_id)
     if category.user_id != user.id:
         return jsonify({
-         'success': False,
-         'message': 'Category does not belong to user'
+            'success': False,
+            'message': 'Category does not belong to user'
         }), 401
 
     storage.delete(category)
     storage.save()
 
     return jsonify({
-     'success': True,
-     'message': 'Category deleted successfully'
+        'success': True,
+        'message': 'Category deleted successfully'
     })
 
 
@@ -404,16 +406,16 @@ def update_category(category_id):
 
     if 'user' not in session:
         return jsonify({
-         'success': False,
-         'message': 'User not logged in'
+            'success': False,
+            'message': 'User not logged in'
         }), 401
 
     user = storage.get_object(User, session['user'])
     category = storage.get_object(Category, category_id)
     if category.user_id != user.id:
         return jsonify({
-         'success': False,
-         'message': 'Category does not belong to user'
+            'success': False,
+            'message': 'Category does not belong to user'
         }), 401
 
     data = request.get_json()
@@ -424,26 +426,27 @@ def update_category(category_id):
     storage.save()
 
     return jsonify({
-     'success': True,
-     'message': 'Category updated successfully',
-     'category': {
-      'id': category.id,
-      'name': category.name,
-      'created_at': category.created_at,
-      'transaction_count': category.transaction_count,
-      'current_balance': category.current_balance,
-      'description': category.description
-     }
+        'success': True,
+        'message': 'Category updated successfully',
+        'category': {
+            'id': category.id,
+            'name': category.name,
+            'created_at': category.created_at,
+            'transaction_count': category.transaction_count,
+            'current_balance': category.current_balance,
+            'description': category.description
+        }
     })
+
 
 @app.route('/profile', methods=['GET'])
 def profile():
-	""" profile page """
-	if 'user' not in session:
-		return redirect(url_for('login'))
+    """ profile page """
+    if 'user' not in session:
+        return redirect(url_for('login'))
 
-	user = storage.get_object(User, session['user'])
-	return render_template('profile.html', user=user)
+    user = storage.get_object(User, session['user'])
+    return render_template('profile.html', user=user)
 
 
 @app.route('/api/v1/change-password', methods=['PUT'])
@@ -451,8 +454,8 @@ def change_password():
     """ change password """
     if 'user' not in session:
         return jsonify({
-         'success': False,
-         'message': 'User not logged in'
+            'success': False,
+            'message': 'User not logged in'
         }), 401
 
     user = storage.get_object(User, session['user'])
@@ -463,8 +466,8 @@ def change_password():
     old_password = hashlib.md5(old_password.encode()).hexdigest()
     if old_password != user.password:
         return jsonify({
-         'success': False,
-         'message': 'Old password is incorrect'
+            'success': False,
+            'message': 'Old password is incorrect'
         }), 401
 
     new_password = hashlib.md5(new_password.encode()).hexdigest()
@@ -472,17 +475,18 @@ def change_password():
     storage.save()
 
     return jsonify({
-     'success': True,
-     'message': 'Password updated successfully'
+        'success': True,
+        'message': 'Password updated successfully'
     })
+
 
 @app.route('/api/v1/edit-profile', methods=['PUT'])
 def edit_profile():
     """ edit profile """
     if 'user' not in session:
         return jsonify({
-         'success': False,
-         'message': 'User not logged in'
+            'success': False,
+            'message': 'User not logged in'
         }), 401
 
     user = storage.get_object(User, session['user'])
@@ -498,11 +502,13 @@ def edit_profile():
     storage.save()
 
     return jsonify({
-     'success': True,
-     'message': 'Profile updated successfully'
+        'success': True,
+        'message': 'Profile updated successfully'
     })
 
 # Error handler for Method Not Allowed
+
+
 @app.errorhandler(405)
 def method_not_allowed(e):
     # You can return a custom message or JSON response
