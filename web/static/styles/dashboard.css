@@ -155,6 +155,12 @@ header .logout-wrapper a {
     .cards .card {
         padding: 10px;
     }
+
+	.charts {
+		flex-direction: column;
+		flex:0;
+	}
+
 }
 
 @media screen and (max-width: 800px) {
