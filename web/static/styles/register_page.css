@@ -1,3 +1,4 @@
+/* Global style */
 * {
 	margin: 0;
 	padding: 0;
@@ -11,9 +12,12 @@ body {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
+	min-height: 100vh;
+	min-width: 100vw;
 }
 
 
+/* Logo styles */
 .logo {
 	display: flex;
 	justify-content: center;
@@ -28,6 +32,8 @@ body {
 	margin-bottom: 30px;
 }
 
+
+/* Form Style */
 .register_form {
 	display: flex;
 	flex-direction: column;
@@ -37,13 +43,18 @@ body {
 	background-color: #ffffff;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	padding-top: 30px;
-	padding-bottom: 30px;
-	width: 33.3%;
+	padding: 30px;
+	min-width: 33.3%;
 	margin-bottom: 30px;
 }
 
 
+.register_form form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	
+}
 
 .register_form h1 {
 	font-size: 2em;
@@ -52,7 +63,6 @@ body {
 
 .register_form .form_input {
 	display: flex;
-	width: 400px;
 	margin: 10px;
 }
 

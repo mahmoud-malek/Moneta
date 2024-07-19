@@ -1,4 +1,4 @@
-
+/* Global style */
 * {
 	margin: 0;
 	padding: 0;
@@ -13,46 +13,54 @@ body {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
+	min-height: 100vh;
+	min-width: 100vw;
 }
 
 
+/* Logo Styling */
 .logo {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 33%;
+	width: 40vw;
 }
 .logo img {
 	width: 50%;
 	height: 100%;
 	margin-top: 30px;
-	border-radius: 35%;
+	border-radius:  35%;
 	margin-bottom: 30px;
 }
+
+/* Login form styling */
 .login_form {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	
+	min-width: 33%;
 	background-color: #ffffff;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	padding-top: 30px;
-	padding-bottom: 30px;
-	width: 33.3%;
+	padding: 30px;
 	margin-bottom: 30px;
+}
+
+.login_form form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 }
 
 .login_form .form_input {
 	display: flex;
-	width: 400px;
 	margin: 10px;
 }
 
 .login_form h1 {
 	font-size: 2em;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 

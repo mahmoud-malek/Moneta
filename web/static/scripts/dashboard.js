@@ -146,4 +146,25 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
+  // Toggel Button
+  const toggleButton = document.createElement('div');
+  toggleButton.classList.add('sidebar-toggle');
+  toggleButton.innerHTML = '&#9776;';
+  document.body.appendChild(toggleButton);
+
+  const sidebar = document.querySelector('.sidebar');
+  const header = document.querySelector('header');
+
+  header.appendChild(toggleButton);
+  toggleButton.addEventListener('click', () => {
+    sidebar.classList.toggle('show');
+  });
+
+  // Close Sidebar when click anything outside it
+  document.addEventListener('click', (e) => {
+    if (!toggleButton.contains(e.target)) {
+      sidebar.classList.remove('show');
+    }
+  });
 });
