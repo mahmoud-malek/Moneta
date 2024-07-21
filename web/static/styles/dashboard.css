@@ -77,6 +77,8 @@ header {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    flex-flow: row wrap;
+    margin-bottom: 20px;
 }
 
 header .user-wrapper {
@@ -205,4 +207,15 @@ header .logout-wrapper a {
         flex-direction: column;
         align-items: flex-start;
     }
+
+     .logout-wrapper {
+        margin-left: 25px;
+        margin-top: 10px;
+    }
+
+    .user-wrapper {
+        margin-left: 25px;
+        margin-top: 10px;
+    }
+
 }
