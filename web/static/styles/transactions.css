@@ -7,6 +7,9 @@
 
 body {
 	display: flex;
+	flex-direction: row;
+	min-width: 100vw;
+	min-height: 100vh;
 }
 
 .sidebar {
@@ -14,10 +17,18 @@ body {
 	flex-direction: column;
 	background-color: #2a2a2a;
 	min-height: 100vh;
-	width: 20%;
+	width: 250px;
 	color: white;
+	transition: transform 0.5s ease;
 	position: fixed;
+	z-index: 1000;
+	
 }
+
+.sidebar-toggle {
+	display: none;
+}
+
 
 .sidebar-header {
 	display: flex;
@@ -53,11 +64,10 @@ body {
 
 .main-content{
 	padding: 20px;
-	width: 80%;
 	min-height: 100vh;
-	height: 200vh;
+	width: calc(100% - 250px);
 	background: #f4f4f4;
-	margin-left: 20%;
+	margin-left: 250px;
 }
 
 header{
@@ -253,3 +263,37 @@ background-color: rgb(117, 114, 123);;
 	margin: 0px 20px;
 }
 
+@media screen and (max-width: 800px){
+	.sidebar {
+		 transform: translateY(-100%);
+	}
+
+	header {
+		flex-wrap: wrap;
+	}
+
+	.main-content {
+		margin-left: 0;
+		width: 100%;
+	}
+
+	.transactions-header {
+		flex-direction: column;
+	}
+
+	.transactions-header div {
+		margin: 10px;
+	}
+
+	.sidebar-toggle {
+		display: block;
+		margin-bottom: 5px;
+		cursor: pointer;
+		font-size: 1.5em;
+		color: #2a2a2a;
+	}
+
+	.sidebar.show {
+		transform: translateY(0);
+	}
+}

@@ -301,4 +301,22 @@ document.addEventListener('DOMContentLoaded', () => {
     totalPages = Math.ceil(filteredTransactions.length / transactionsPerPage);
     updateTransactionsList(1, filteredTransactions);
   };
+
+	//Show minimized sidebar
+	const toggleButton = document.createElement('div');
+	toggleButton.classList.add('sidebar-toggle');
+	toggleButton.innerHTML = '&#9776;';
+	const header = document.getElementsByTagName('header')[0];
+	header.insertBefore(toggleButton, header.firstChild);
+
+  	const sidebar = document.querySelector('.sidebar');
+	toggleButton.onclick = () => {
+		sidebar.classList.toggle('show');
+	};
+	
+	document.addEventListener('click', (event) => {
+		if (!event.target.matches('.sidebar-toggle') && !event.target.matches('.sidebar a')) {
+			sidebar.classList.remove('show');
+		}
+	});
 });
