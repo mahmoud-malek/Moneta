@@ -33,8 +33,6 @@ def close_session(exception):
 @app.route('/')
 def index():
     """ index page """
-    if 'user' in session:
-        return redirect(url_for('dashboard'))
     return render_template('index.html')
 
 

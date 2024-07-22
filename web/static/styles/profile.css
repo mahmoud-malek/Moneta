@@ -14,8 +14,12 @@ body {
     flex-direction: column;
     background-color: #2a2a2a;
     height: 100vh;
-    width: 20%;
+    width: 250px;
+	transition: transform 0.5s ease;
+	position: fixed;
     color: white;
+	overflow-y: auto;
+	z-index: 1000;
 }
 
 .sidebar-header {
@@ -50,12 +54,17 @@ body {
     background: #575757;
 }
 
+.sidebar-toggle {
+	display: none;
+}
+
+
 .main {
     padding: 20px;
-    width: 80%;
+    width: calc(100% - 250px);
     min-height: 100vh;
     background: #f4f4f4;
-    margin-left: 20px;
+    margin-left: 250px;
 }
 
 header {
@@ -180,4 +189,46 @@ header {
 
 .password-fields {
     display: none;
+}
+
+@media screen and (max-width: 800px) {
+	.main {
+		padding: 10px;
+		width: 100%;
+		margin-left: 0;
+	}
+
+	.sidebar {
+		transform: translateX(-100%);
+	}
+
+	.sidebar-toggle {
+		display: block;
+		font-size: 1.5rem;
+		color: #2a2a2a;
+		cursor: pointer;
+	}
+
+	.sidebar.show {
+		transform: translateX(0);
+	}
+	
+	header {
+		flex-wrap: wrap;
+		justify-content: space-around;
+	}
+
+	header div {
+		margin: 0 10px;
+	}
+
+	.profile-info-item {
+		flex-direction: column;
+	}
+
+	.profile-info-item input {
+		margin-bottom: 10px;
+	}
+
+
 }

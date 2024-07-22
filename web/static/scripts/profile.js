@@ -94,4 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
   });
+	
+	// media screen 
+	const toggleBtn = document.createElement('div');
+	toggleBtn.className = 'sidebar-toggle';
+	toggleBtn.innerHTML = '☰';
+	const header = document.getElementsByTagName('header')[0];
+	header.insertBefore(toggleBtn, header.firstChild);
+
+	const sidebar = document.querySelector('.sidebar');
+	toggleBtn.onclick = () => {
+		sidebar.classList.toggle('show');
+	};
+
+	document.addEventListener('click', (event) => {
+		if (!event.target.matches('.sidebar a') && !event.target.matches('.sidebar-toggle')) {
+			sidebar.classList.remove('show');
+		}
+	});
 });
