@@ -191,6 +191,17 @@ header {
     display: none;
 }
 
+.delete-btn {
+	margin-left: 10px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: #560000;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+
 @media screen and (max-width: 800px) {
 	.main {
 		padding: 10px;

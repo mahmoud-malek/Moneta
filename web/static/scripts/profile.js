@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const editForm = document.getElementById('editForm');
   const editValue = document.getElementById('editValue');
   const passwordFields = document.querySelector('.password-fields');
-  const closeBtn = document.querySelector('.close');
+	const closeBtn = document.querySelector('.close');
+	const deleteBtn = document.querySelector('.delete-btn');
+
   let currentField = '';
 
   editButtons.forEach(button => {
@@ -66,7 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Error:', error);
           alert('Error updating password');
         });
-    } else {
+	}
+	else {
       const newValue = editValue.value;
       const updateData = {};
       updateData[currentField] = newValue;
@@ -95,6 +98,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 	
+	deleteBtn.addEventListener('click', () => {
+		const confirmDelete = confirm('Are you sure you want to delete your account?');
+		if (confirmDelete) {
+			fetch('/api/v1/delete-account', {
+				method: 'DELETE'
+			})
+				.then(response => response.json())
+				.then(data => {
+					if (data.success) {
+						alert('Account deleted successfully');
+						window.location.href = '/logout';
+					} else {
+						alert(data.message || 'Error deleting account');
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					alert('Error deleting account');
+				});
+		}
+	});
 	// media screen 
 	const toggleBtn = document.createElement('div');
 	toggleBtn.className = 'sidebar-toggle';

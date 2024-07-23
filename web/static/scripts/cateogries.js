@@ -31,7 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const pageInfo = document.getElementById('pageInfo');
 
   addCategoryBtn.onclick = () => {
-    addCategoryModel.style.display = 'block';
+	  addCategoryModel.style.display = 'block';
+	  // make the date field default to today's date
+	  const today = new Date().toISOString().split('T')[0];
+	  document.getElementById('category-date').value = today;
   };
 
   closeModel.onclick = () => {

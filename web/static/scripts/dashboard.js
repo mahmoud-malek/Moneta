@@ -130,23 +130,68 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         }
       }
-    });
+	});
+	  
+	  // Function to calculate the balance for a given set of transactions
+	  const calculateBalance = (transactions) => {
+		  return transactions.reduce((acc, t) => acc + parseFloat(t.amount), 0);
+	  };
 
-    // Spending Categories Chart
-    const Cchart = document.getElementById('spendingCategoriesChart').getContext('2d');
-    const spendingCategoriesChart = new Chart(Cchart, {
-      type: 'doughnut',
-      data: {
-        labels: categories.map(category => category.name),
-        datasets: [{
-          label: 'Spending Categories',
-          backgroundColor: generateRandomColors(categories.length),
-          data: categories.map(category => parseFloat(category.current_balance))
-        }]
-      }
-    });
+	  // Get categories with spending transactions only
+	  const SpendingCategories = categories.map(category => {
+		  const spendingTrans = transactions.filter(t => parseFloat(t.amount) < 0 && t.category_id === category.id);
+		  if (spendingTrans.length > 0) {
+			  return {
+				  ...category,
+				  transactions: spendingTrans,
+				  current_balance: calculateBalance(spendingTrans)
+			  };
+		  }
+	  }).filter(category => category !== undefined);
+
+	  // Get categories with income transactions only
+	  const IncomeCategories = categories.map(category => {
+		  const incomeTrans = transactions.filter(t => t.amount > 0 && t.category_id === category.id);
+		  if (incomeTrans.length > 0) {
+			  return {
+				  ...category,
+				  transactions: incomeTrans,
+				  current_balance: calculateBalance(incomeTrans)
+			  };
+		  }
+	  }).filter(category => category !== undefined);
+
+	  // Income Categories Chart
+	  const Ichart = document.getElementById('incomeCategoriesChart').getContext('2d');
+	  const incomeCategoriesChart = new Chart(Ichart, {
+		  type: 'doughnut',
+		  data: {
+			  labels: IncomeCategories.map(category => category.name),
+			  datasets: [{
+				  label: 'Income Categories',
+				  backgroundColor: generateRandomColors(IncomeCategories.length),
+				  data: IncomeCategories.map(category => parseFloat(category.current_balance))
+			  }]
+		  }
+	  });
+
+	  // Spending Categories Chart
+	  const Schart = document.getElementById('spendingCategoriesChart').getContext('2d');
+	  const spendingCategoriesChart = new Chart(Schart, {
+		  type: 'doughnut',
+		  data: {
+			  labels: SpendingCategories.map(category => category.name),
+			  datasets: [{
+				  label: 'Spending Categories',
+				  backgroundColor: generateRandomColors(SpendingCategories.length),
+				  data: SpendingCategories.map(category => Math.abs(parseFloat(category.current_balance)))
+			  }]
+		  }
+	  });
+
   }
 
+	
   // Toggel Button
   const toggleButton = document.createElement('div');
   toggleButton.classList.add('sidebar-toggle');
