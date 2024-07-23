@@ -31,17 +31,17 @@ To get a local copy up and running follow these simple steps.
 
 1. Clone the repo
 ```sh
-   git git clone https://github.com/your_username_/moneta.git
+git clone https://github.com/your_username_/moneta.git
 ```
 
 2. go to moneta directory
 ```sh
-	cd Moneta 
+cd Moneta 
 ```
 
 3. Run the bash script to configure everything
 ```sh
-    sudo ./run
+sudo ./run
 ```
 
 
@@ -63,9 +63,12 @@ I used HTML, CSS, and JavaScript for the front-end, and Python with Flask for th
 I also used MySQl as the database. I chose these technologies because I am familiar with them and have experience working with them. I also wanted to keep the application simple and lightweight, so I avoided using complex frameworks and libraries.
 
 ## Screenshots
+### From Web
+![App Screenshot](https://i.imgur.com/LrIeMNe.png)
 
-![App Screenshot](https://imgur.com/LrIeMNe)
-![App Screenshot](https://imgur.com/Ha2WnGD)
+### From Phone
+![App Screenshot](https://imgur.com/Ha2WnGD.png)
+
 
 ## Authors
 
