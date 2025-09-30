@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: moneta-web
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:application
+    autoDeploy: true
+    envVars:
+      - key: MONETA_DATABASE_URL
+        fromDatabase:
+          name: moneta-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: MONETA_DB_DRIVER
+        value: mysql+pymysql
+      - key: FLASK_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: 3.10.12
+databases:
+  - name: moneta-db
+    plan: free
+    databaseName: moneta_db
+    user: moneta_user

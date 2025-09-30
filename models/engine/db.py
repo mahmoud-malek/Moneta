@@ -2,12 +2,14 @@
 
 """ defines the db class """
 
+import os
+from urllib.parse import quote_plus
+
 import models
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import scoped_session, sessionmaker
 from models.base import Base
-from models import user, category, transaction
-import os
+from models import category, transaction, user
 
 known_classes = {
     'User': user.User,
@@ -22,14 +24,24 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        """ creates the session with mysql database """
-        user = os.getenv('MONETA_MYSQL_USER')
-        password = os.getenv('MONETA_MYSQL_PWD')
-        host = os.getenv('MONETA_MYSQL_HOST')
-        database = os.getenv('MONETA_MYSQL_DB')
-        DB_URL = (f'mysql+mysqldb://{user}:{password}@{host}/{database}')
+        """ creates the session with configured database """
+        db_url = os.getenv('MONETA_DATABASE_URL') or os.getenv('DATABASE_URL')
 
-        self.__engine = create_engine(DB_URL, pool_pre_ping=True)
+        if not db_url:
+            user = os.getenv('MONETA_MYSQL_USER')
+            password = os.getenv('MONETA_MYSQL_PWD')
+            host = os.getenv('MONETA_MYSQL_HOST', 'localhost')
+            port = os.getenv('MONETA_MYSQL_PORT', '3306')
+            database = os.getenv('MONETA_MYSQL_DB')
+            driver = os.getenv('MONETA_DB_DRIVER', 'mysql+pymysql')
+
+            if not all([user, password, host, database]):
+                raise RuntimeError('Missing database configuration for Moneta')
+
+            password = quote_plus(password)
+            db_url = f'{driver}://{user}:{password}@{host}:{port}/{database}'
+
+        self.__engine = create_engine(db_url, pool_pre_ping=True)
 
     def all(self, target=None):
         """ qury all records for all or specific class """
