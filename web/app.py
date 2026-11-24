@@ -11,6 +11,8 @@ from models.user import User
 from models.category import Category
 from models.transaction import Transaction
 import hashlib
+import hmac
+from werkzeug.security import generate_password_hash, check_password_hash
 import service
 import secrets
 import json
@@ -22,6 +24,28 @@ secret_key = os.getenv('SECRET_KEY')
 app = Flask(__name__)
 app.secret_key = secret_key
 app.strict_slashes = False
+
+
+def hash_password(password):
+    """ salted password hash (PBKDF2-SHA256) """
+    return generate_password_hash(password, method='pbkdf2:sha256')
+
+
+def is_legacy_hash(stored):
+    """ old accounts stored an unsalted MD5 hex digest (32 hex chars) """
+    if not isinstance(stored, str) or len(stored) != 32:
+        return False
+    return all(c in '0123456789abcdef' for c in stored.lower())
+
+
+def verify_password(stored, password):
+    """ check a password against a salted hash or a legacy MD5 hash """
+    if not stored:
+        return False
+    if is_legacy_hash(stored):
+        md5 = hashlib.md5(password.encode()).hexdigest()
+        return hmac.compare_digest(md5, stored.lower())
+    return check_password_hash(stored, password)
 
 
 @app.teardown_appcontext
@@ -66,9 +90,17 @@ def login_post():
 
     email = request.form['email']
     password = request.form['password']
-    password = hashlib.md5(password.encode()).hexdigest()
-    user = service.get_user(email, password)
+    user = None
+    for candidate in storage.all(User).values():
+        if candidate.email == email and verify_password(
+                candidate.password, password):
+            user = candidate
+            break
     if user:
+        if is_legacy_hash(user.password):
+            # upgrade an old MD5 hash to a salted hash on successful login
+            user.password = hash_password(password)
+            storage.save()
         session['user'] = user.id
         return redirect(url_for('dashboard'))
     # if wrong credentials
@@ -114,7 +146,7 @@ def register_post():
     if service.check_email(email):
         return render_template('register.html', error='User already exists')
 
-    password = hashlib.md5(password.encode()).hexdigest()
+    password = hash_password(password)
     user = User(name=name, email=email, password=password)
     user.save()
     session['user'] = user.id
@@ -462,15 +494,13 @@ def change_password():
     old_password = data['old_password']
     new_password = data['new_password']
 
-    old_password = hashlib.md5(old_password.encode()).hexdigest()
-    if old_password != user.password:
+    if not verify_password(user.password, old_password):
         return jsonify({
          'success': False,
          'message': 'Old password is incorrect'
         }), 401
 
-    new_password = hashlib.md5(new_password.encode()).hexdigest()
-    user.password = new_password
+    user.password = hash_password(new_password)
     storage.save()
 
     return jsonify({
